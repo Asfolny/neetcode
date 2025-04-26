@@ -10,62 +10,48 @@
  * }
  */
 
-public class Solution {    
+public class Solution {
     public ListNode MergeKLists(ListNode[] lists) {
-        var head = lists.Length switch {
-            0 => null,
-            _ => lists[0]
-        };
+        if (lists == null || lists.Length == 0)
+            return null;
 
-
-        for (int i = 1; i < lists.Length; i++) {
-            head = MergeTwoLists(head, lists[i]);
-        }
-
-        return head; 
+        return Divide(lists, 0, lists.Length - 1);
     }
 
-    private ListNode MergeTwoLists(ListNode left, ListNode right) {
-        // Base, figure out where to start
-        ListNode head = null;
-        if (left.val > right.val) {
-            head = right;
-            right = right.next;
-        } else {
-            head = left;
-            left = left.next;
-        }
-        var tail = head;
+    private ListNode Divide(ListNode[] lists, int low, int high) {
+        if (low > high)
+            return null;
+        if (low == high) 
+            return lists[low];
 
-        while (left != null || right != null) {
-            // Consume right
-            if (left == null) {
-                tail.next = right;
-                right = right.next;
-                tail = tail.next;
-                continue;
-            }
+        int mid = low + (high - low) / 2;
+        ListNode left = Divide(lists, low, mid);
+        ListNode right = Divide(lists, mid + 1, high);
 
-            // Consume left
-            if (right == null) {
-                tail.next = left;
+        return Conquer(left, right);
+    }
+
+    private ListNode Conquer(ListNode left, ListNode right) {
+        ListNode head = new ListNode(0);
+        ListNode curr = head;
+
+        while (left != null && right != null) {
+            if (left.val <= right.val) {
+                curr.next = left;
                 left = left.next;
-                tail = tail.next;
-                continue;
-            }
-
-            if (left.val < right.val) {
-                tail.next = left;
-                left = left.next;
-                tail = tail.next; 
             } else {
-                tail.next = right;
+                curr.next = right;
                 right = right.next;
-                tail = tail.next;
             }
+            curr = curr.next;
         }
 
-        return head;
+        if (left != null) {
+            curr.next = left;
+        } else {
+            curr.next = right;
+        }
+
+        return head.next;
     }
 }
-
