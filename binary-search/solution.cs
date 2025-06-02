@@ -1,20 +1,19 @@
 public class Solution {
     public int Search(int[] nums, int target) {
-        int left = 0, right = nums.Length -1;
-        int mid;
+        return RecSearch(nums, 0, nums.Length-1, target);
+    }
 
-        while (left <= right) {
-            mid = (left + right) / 2;
+    private int RecSearch(int[]nums, int left, int right, int target) {
+        if (left >= right)
+            return nums[left] == target ? left : -1;
 
-            if (target > nums[mid]) {
-                left = mid + 1;
-            } else if (target < nums[mid]) {
-                right = mid - 1;
-            } else {
-                return mid;
-            }
-        }
-        return -1;
+        int mid = (left + right) / 2;
+        if (nums[mid] == target)
+            return mid;
+        
+        return nums[mid] > target ?
+            RecSearch(nums, left, mid-1, target) : 
+            RecSearch(nums, mid+1, right, target);
     }
 }
 
