@@ -16,8 +16,6 @@
 
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        var res = new int[k];
-        var i = 0;
         Stack<TreeNode> stack = new Stack<>();
         TreeNode cur = root;
 
@@ -27,12 +25,14 @@ class Solution {
                 cur = cur.left;
             }
             cur = stack.pop();
-            res[i] = cur.val;
-            i++;
+            k--;
+	    if (k == 0) {
+		return curr.val;
+	    }
             cur = cur.right;
         }
 
-        return res[k-1];
+        return -1;
     }
 }
 
