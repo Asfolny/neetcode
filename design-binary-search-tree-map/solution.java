@@ -13,7 +13,7 @@ class TreeMap {
         while (true) {
             if (key == curr.key) {
                 curr.val = val;
-                return; // duplicate
+                return; // duplicate, update
             }
 
             if (key > curr.key) {
@@ -57,14 +57,9 @@ class TreeMap {
     }
 
     public int getMin() {
-        if (root == null) return -1;
+        var min = minNode(root);
 
-        var curr = root;
-
-        while (curr.left != null)
-            curr = curr.left;
-
-        return curr.val;
+        return (min != null) ? min.val : -1;
     }
 
     public int getMax() {
@@ -96,7 +91,7 @@ class TreeMap {
             } else if (root.right == null) {
                 return root.left;
             } else {
-                TreeNode minNode = minKeyNode(root.right);
+                TreeNode minNode = minNode(root.right);
                 root.key = minNode.key;
                 root.val = minNode.val;
                 root.right = deleteNode(root.right, minNode.key);
@@ -105,7 +100,7 @@ class TreeMap {
         return root;
     }
 
-    private TreeNode minKeyNode(TreeNode root) {
+    private TreeNode minNode(TreeNode root) {
         TreeNode curr = root;
         while(curr != null && curr.left != null)
             curr = curr.left;
