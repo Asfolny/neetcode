@@ -2,14 +2,14 @@ class TreeMap {
     TreeNode root;
 
     public TreeMap() {
-        this.root = null;
+        root = null;
     }
 
     public void insert(int key, int val) {
-        if (this.root == null)
-            this.root = new TreeNode(val, key);
+        if (root == null)
+            root = new TreeNode(val, key);
 
-        var curr = this.root;
+        var curr = root;
         while (true) {
             if (key == curr.key) {
                 curr.val = val;
@@ -38,7 +38,7 @@ class TreeMap {
     }
 
     public int get(int key) {
-        var curr = this.root;
+        var curr = root;
 
         while (curr != null) {
             if (curr.key == key)
@@ -57,9 +57,9 @@ class TreeMap {
     }
 
     public int getMin() {
-        if (this.root == null) return -1;
+        if (root == null) return -1;
 
-        var curr = this.root;
+        var curr = root;
 
         while (curr.left != null)
             curr = curr.left;
@@ -68,9 +68,9 @@ class TreeMap {
     }
 
     public int getMax() {
-        if (this.root == null) return -1;
+        if (root == null) return -1;
 
-        var curr = this.root;
+        var curr = root;
 
         while (curr.right != null)
             curr = curr.right;
@@ -79,7 +79,7 @@ class TreeMap {
     }
 
     public void remove(int key) {
-       this.root = this.deleteNode(this.root, key);
+       root = deleteNode(root, key);
     }
 
     private TreeNode deleteNode(TreeNode root, int key) {
@@ -107,16 +107,15 @@ class TreeMap {
 
     private TreeNode minKeyNode(TreeNode root) {
         TreeNode curr = root;
-        while(curr != null && curr.left != null) {
+        while(curr != null && curr.left != null)
             curr = curr.left;
-        }
         return curr;
     }
 
     public List<Integer> getInorderKeys() {
         List<Integer> res = new ArrayList<>();
         Stack<TreeNode> stack = new Stack<>();
-        TreeNode curr = this.root;
+        TreeNode curr = root;
 
         while (curr != null || !stack.isEmpty()) {
             while (curr != null) {
