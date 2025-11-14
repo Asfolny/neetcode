@@ -13,29 +13,19 @@
  *     }
  * }
  */
-class Solution {
+public class Solution {
     public boolean hasPathSum(TreeNode root, int targetSum) {
-        if (root == null) return false;
-        return pathSumWalk(root, targetSum, new ArrayList<Integer>());
+        return dfs(root, 0, targetSum);
     }
 
-    private boolean pathSumWalk(TreeNode node, int target, List<Integer> path) {
-        path.add(node.val);
-        var sum = path.stream().reduce(0, Integer::sum);
+    private boolean dfs(TreeNode node, int curSum, int targetSum) {
+        if (node == null) return false;
 
-        if (sum == target && node.left == null && node.right == null) {
-            return true;
+        curSum += node.val;
+        if (node.left == null && node.right == null) {
+            return curSum == targetSum;
         }
 
-        if (node.left != null && pathSumWalk(node.left, target, path)) {
-            return true;
-        }
-
-        if (node.right != null && pathSumWalk(node.right, target, path)) {
-            return true;
-        }
-
-        path.remove(path.size() - 1);
-        return false;
+        return dfs(node.left, curSum, targetSum) || dfs(node.right, curSum, targetSum);
     }
 }
