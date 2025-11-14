@@ -5,22 +5,21 @@ class KthLargest {
     public KthLargest(int k, int[] nums) {
         heap = new ArrayList<Integer>() {{ add(0); }};
         this.k = k;
-        for (var num : nums) {
+
+        for (var num : nums)
             this.push(num);
-        }
     }
     
     public int add(int val) {
         push(val);
+
         var remmed = new ArrayList<Integer>();
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < k; i++)
             remmed.add(pop());
-        }
-        var res = remmed.get(remmed.size()-1);
-        for (var b : remmed) {
+        for (var b : remmed)
             push(b);
-        }
-        return res;
+
+        return remmed.get(remmed.size() - 1);
     }
 
     public void push(int val) {
