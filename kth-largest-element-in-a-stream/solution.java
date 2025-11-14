@@ -4,7 +4,7 @@ class KthLargest {
 
     public KthLargest(int k, int[] nums) {
         this.k = k;
-        this.minHeap = new PriorityQueue<>();
+        this.minHeap = new PriorityQueue<>(k+1);
         for (int num : nums) {
             minHeap.offer(num);
             if (minHeap.size() > k) {
