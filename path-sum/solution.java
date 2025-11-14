@@ -15,17 +15,32 @@
  */
 public class Solution {
     public boolean hasPathSum(TreeNode root, int targetSum) {
-        return dfs(root, 0, targetSum);
-    }
+        if (root == null) return false;
 
-    private boolean dfs(TreeNode node, int curSum, int targetSum) {
-        if (node == null) return false;
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        Queue<Integer> sumQueue = new LinkedList<>();
+        nodeQueue.add(root);
+        sumQueue.add(targetSum - root.val);
 
-        curSum += node.val;
-        if (node.left == null && node.right == null) {
-            return curSum == targetSum;
+        while (!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.poll();
+            int currSum = sumQueue.poll();
+
+            if (node.left == null && node.right == null && currSum == 0) {
+                return true;
+            }
+
+            if (node.left != null) {
+                nodeQueue.add(node.left);
+                sumQueue.add(currSum - node.left.val);
+            }
+
+            if (node.right != null) {
+                nodeQueue.add(node.right);
+                sumQueue.add(currSum - node.right.val);
+            }
         }
 
-        return dfs(node.left, curSum, targetSum) || dfs(node.right, curSum, targetSum);
+        return false;
     }
 }
