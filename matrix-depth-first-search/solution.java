@@ -1,31 +1,28 @@
 class Solution {
-    List<List<String>> res;
     public int countPaths(int[][] grid) {
-        res = new ArrayList<>();
-        var path = new LinkedHashSet<String>();
-        dfs(0, 0, path, grid);
-        return res.size();
+        return helper(grid, 0, 0, new HashSet<>());
     }
 
-    private void dfs(int r, int c, Set<String> path, int[][] grid) {
-        var rows = grid.length;
-        var cols = grid[0].length;
-        if (grid[rows-1][cols-1] == 1 || // special case, if the bottom right is NOT a valid path
-            Math.min(r, c) < 0 || r >= rows || c >= cols ||
-            path.contains(String.format("%d,%d", r, c)) || grid[r][c] == 1) {
-            return;
+    private int helper(int[][] grid, int r, int c, Set<String> visit) {
+        int ROWS = grid.length, COLS = grid[0].length;
+        if (Math.min(r, c) < 0 ||
+            r == ROWS || c == COLS ||
+            visit.contains(r + "," + c) || grid[r][c] == 1) {
+            return 0;
+        }
+        if (r == ROWS - 1 && c == COLS - 1) {
+            return 1;
         }
 
-        if (r == rows-1 && c == cols-1) {
-            res.add(new ArrayList<>(path));
-            return;
-        }
+        visit.add(r + "," + c);
 
-        path.add(String.format("%d,%d", r, c));
-        dfs(r + 1, c, path, grid);
-        dfs(r - 1, c, path, grid);
-        dfs(r, c + 1, path, grid);
-        dfs(r, c - 1, path, grid);
-        path.remove(String.format("%d,%d", r, c));
+        int count = 0;
+        count += helper(grid, r + 1, c, visit);
+        count += helper(grid, r - 1, c, visit);
+        count += helper(grid, r, c + 1, visit);
+        count += helper(grid, r, c - 1, visit);
+
+        visit.remove(r + "," + c);
+        return count;
     }
 }
