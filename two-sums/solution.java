@@ -1,16 +1,17 @@
 class Solution {
     public int[] twoSum(int[] nums, int target) {
         var res = new int[2];
+        var map = new HashMap<Integer, Integer>();
+
         for (int i = 0; i < nums.length; i++) {
-            for (int j = 0; j < nums.length; j++) {
-                if (j == i) continue;
-                var attempt = nums[i] + nums[j];
-                if (attempt == target) {
-                    res[0] = i;
-                    res[1] = j;
-                    return res;
-                }
+            var diff = target - nums[i];
+            if (map.containsKey(diff)) {
+                res[0] = map.get(diff);
+                res[1] = i;
+                break;
             }
+
+            map.put(nums[i], i);
         }
 
         return res;
