@@ -1,15 +1,30 @@
-public class Solution {
+class Solution {
     public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length()) {
+        var bucketS = new HashMap<Character, Integer>();
+        s.chars().mapToObj(e->(char)e).forEach((c) -> {
+            bucketS.putIfAbsent(c, 0);
+            bucketS.put(c, bucketS.get(c) + 1);
+        });
+
+        var bucketT = new HashMap<Character, Integer>();
+        t.chars().mapToObj(e->(char)e).forEach((c) -> {
+            bucketT.putIfAbsent(c, 0);
+            bucketT.put(c, bucketT.get(c) + 1);
+        });
+
+        if (bucketS.size() != bucketT.size()) {
+            System.out.println("Unequal size");
             return false;
         }
 
-        HashMap<Character, Integer> countS = new HashMap<>();
-        HashMap<Character, Integer> countT = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            countS.put(s.charAt(i), countS.getOrDefault(s.charAt(i), 0) + 1);
-            countT.put(t.charAt(i), countT.getOrDefault(t.charAt(i), 0) + 1);
+        for (var keyS : bucketS.keySet()) {
+            if (!bucketT.containsKey(keyS) ||
+                !bucketS.get(keyS).equals(bucketT.get(keyS))) {
+                return false;
+            }
         }
-        return countS.equals(countT);
+
+        return true;
     }
 }
+
