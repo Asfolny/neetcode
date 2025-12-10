@@ -1,28 +1,16 @@
 func rob(nums []int) int {
-    if len(nums) < 1 {
-        return 0
+    rob1, rob2 := 0, 0
+    for _, num := range nums {
+        temp := max(num+rob1, rob2)
+        rob1 = rob2
+        rob2 = temp
     }
-
-    cache := make(map[int]int)
-    return dfs(0, nums, cache)
+    return rob2
 }
 
-func dfs(idx int, nums []int, cache map[int]int) int {
-    if idx >= len(nums) {
-        return 0
+func max(a, b int) int {
+    if a > b {
+        return a
     }
-
-    if num, ok := cache[idx]; ok {
-        return num
-    }
-
-    cache[idx] = Max(nums[idx] + dfs(idx + 2, nums, cache), dfs(idx + 1, nums, cache))
-    return cache[idx]
-}
-
-func Max(x, y int) int {
-    if x < y {
-        return y
-    }
-    return x
+    return b
 }
